@@ -1,81 +1,25 @@
-import androidx.test.espresso.Espresso;
-import androidx.test.espresso.action.ViewActions;
-import androidx.test.espresso.assertion.ViewAssertions;
-import androidx.test.espresso.matcher.ViewMatchers;
-import androidx.test.ext.junit.rules.ActivityScenarioRule;
-import androidx.test.ext.junit.runners.AndroidJUnit4;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import pytest
+from hamcrest import assert_that, equal_to_ignoring_case
 
-import android.intent.action.MAIN;
+from tests.testdata import data
 
-import java.util.Map;
+pytestmark = pytest.mark.usefixtures("setup")
 
-import static androidx.test.espresso.Espresso.onView;
-import static androidx.test.espresso.matcher.ViewMatchers.withId;
-import static androidx.test.espresso.matcher.ViewMatchers.withText;
-import androidx.test.platform.app.InstrumentationRegistry;
+def test_add_news(auth):
+    main_page, header = auth
+    news_title = data["title"]
 
-@RunWith(AndroidJUnit4.class)
-public class MyEspressoTest {
+    ctrl_panel = main_page \
+        .all_news_view() \
+        .open_control_panel() \
+        .click_add_news_button() \
+        .set_category(data["category"]) \
+        .set_title(news_title) \
+        .set_date() \
+        .set_time(data["time"]) \
+        .set_description(data["description"]) \
+        .click_save_button() \
 
-    private static Map<String, String> data;
-     private static final String PACKAGE_NAME = "ru.iteco.fmhandroid";
-
-
-    @Rule
-    public ActivityScenarioRule<MAIN> activityRule
-            = new ActivityScenarioRule<>(MAIN.class);
-
-    @Before
-    public void setup() {
-        data = Map.of(
-                "title", "New Test Title",
-                "category", "News Category",
-                "time", "12:00",
-                "description", "Test description for news"
-        );
-    }
-
-    @Test
-    public void testAddNews() {
-
-        # 1. Перейти на экран со списком новостей
-        onView(withId(getResourceId("all_news_text_view"))).perform(ViewActions.click());
-
-        # 2. Открыть панель управления
-         onView(withId(getResourceId("news_control_panel_material_button"))).perform(ViewActions.click());
-
-
-        # 3. Нажать кнопку "Добавить новость"
-        onView(withId(getResourceId("add_news_button"))).perform(ViewActions.click());
-
-        # 4. Заполнить поля
-        onView(withId(getResourceId("news_item_category_text_input_edit_text")))
-                .perform(ViewActions.typeText(data.get("category")), ViewActions.closeSoftKeyboard());
-
-
-        onView(withId(getResourceId("news_item_title_text_input_edit_text")))
-                .perform(ViewActions.typeText(data.get("title")), ViewActions.closeSoftKeyboard());
-
-        onView(withId(getResourceId("news_item_description_text_input_edit_text")))
-                .perform(ViewActions.typeText(data.get("description")), ViewActions.closeSoftKeyboard());
-
-        # 5. Сохранить
-        onView(withId(getResourceId("save_button"))).perform(ViewActions.click());
-
-        # 6. Проверка, что новость отобразилась
-        onView(withText(data.get("title")))
-             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()));
-
-    }
-    private int getResourceId(String resourceName) {
-        return InstrumentationRegistry
-                .getInstrumentation()
-                .getTargetContext()
-                .getResources()
-                .getIdentifier(resourceName, "id", PACKAGE_NAME);
-    }
-}
+    news = ctrl_panel.find_element(("xpath", f"//android.widget.TextView[@text='{news_title}']"))
+    assert_that(news.get_attribute("text"), equal_to_ignoring_case(news_title))
+    assert_that(news.is_displayed())

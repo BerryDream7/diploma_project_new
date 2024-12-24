@@ -18,24 +18,32 @@ __Описание приложения__
 
 __Запуск__  
 
-- Убедитесь, что на вашем ПК установлена программа Android studio (инструкция по установке: https://github.com/netology-code/guides/blob/master/android/android_studio/instruction1.md)
-- Проверьте, чтобы на вашем ПК была установлена Java версии 17 и добавлена в PATH.
-- Так же проверьте, чтобы был установлен Python.
-- Убедитесь, что на вашем компьютере установлены Python и pip (менеджер пакетов для Python).
-- Если не установлены, то: 
-       - установите Appium по команде  "npm install -g appium";
-       - установите Appium-Python-Client по команде "pip install Appium-Python-Client".
-- Установите Allure (инструкция https://allurereport.org/docs/install-for-windows/).
+- Убедитесь, что на вашем ПК установлена:
+      - программа Android studio (инструкция по установке: https://github.com/netology-code/guides/blob/master/android/android_studio/instruction1.md);
+      - Java версии 17 (через команду java -version) и добавлена в PATH в свойствах системы вашего ПК -> переменные среды;
+      - Node.js (установить Node.js можно по ссылке https://nodejs.org/en/download/prebuilt-installer);
+      - Python и pip - менеджер пакетов для Python (установить Appium можно после открытия папки fmh-android по команде  "npm install -g appium", 
+        установить Appium-Python-Client можно по команде "pip install Appium-Python-Client".
+      - Allure (инструкция установки https://allurereport.org/docs/install-for-windows/);
 - Клонируем на локальный репозиторий Дипломный проект;
-- Запускаем репозиторий в Android Studio;
-- Установите зависимости проекта командой pip install -r requirements.txt
-- Запустите Appium сервер в терминале командой "appium"
-- Запустите эмулятор Android API 29
+- Запускаем в Android Studio папку fmh-android с тестами;
+- Инициализируем ваш проект командой npm init;
+- Устанавливаем для запуска python тестов virtualenv командой pip install virtualenv;
+- Создайте новое виртуальное окружение командой virtualenv venv;
+- Активируйте виртуальное окружение командой venv\Scripts\activate;
+- Устанавливаем библиотеки pytest и hamcrest командой pip install PyHamcrest==2.0.4;
+- Устанавливаем pip install pytest-cov;
+- Устанавливаем pip install requests;
+- Установливаем зависимости проекта командой pip install -r requirements.txt;
+
+
+- Запустите Appium сервер в терминале командой "appium";
+- Создаем эмулятор Pixel 6a API 29 и запускаем его (проверить установку можно нажав дважды Ctrl, затем
+  ввести название приложения "app" и запустить.;
 - В терминале выполнить команду для запуска всех авто-тестов: ./gradlew connectedDebugAndroidTest;
+
 
 __Формирование отчета Allure с эмулятора__
 
-- Открыть Device File Explorer на эмуляторе;
-- Выгрузить каталог результатов тестирования расположенный на эмуляторе ./tmp/allure_report;
-- В терминале, в директории каталога с результатами тестирования, запустить команду allure serve; 
+- В терминале Android studio вводим allure serve allure-reports
 - Дождаться генерации отчёта и посмотреть его в открывшемся окне браузера;
