@@ -1,7 +1,8 @@
 import pytest
 from hamcrest import assert_that, equal_to_ignoring_case
 
-from tests.testdata import auth_data
+from tests.test_data import auth_data
+from pages.authorization import AuthPage
 
 pytestmark = pytest.mark.usefixtures("setup")
 

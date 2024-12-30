@@ -22,26 +22,23 @@ __Запуск__
       - программа Android studio (инструкция по установке: https://github.com/netology-code/guides/blob/master/android/android_studio/instruction1.md);
       - Java версии 17 (через команду java -version) и добавлена в PATH в свойствах системы вашего ПК -> переменные среды;
       - Node.js (установить Node.js можно по ссылке https://nodejs.org/en/download/prebuilt-installer);
-      - Python и pip - менеджер пакетов для Python (установить Appium можно после открытия папки fmh-android по команде  "npm install -g appium", 
-        установить Appium-Python-Client можно по команде "pip install Appium-Python-Client".
+      - Python (Установить можно софициального сайта https://www.python.org/);
       - Allure (инструкция установки https://allurereport.org/docs/install-for-windows/);
 - Клонируем на локальный репозиторий Дипломный проект;
 - Запускаем в Android Studio папку fmh-android с тестами;
 - Инициализируем ваш проект командой npm init;
-- Устанавливаем для запуска python тестов virtualenv командой pip install virtualenv;
-- Создайте новое виртуальное окружение командой virtualenv venv;
-- Активируйте виртуальное окружение командой venv\Scripts\activate;
-- Устанавливаем библиотеки pytest и hamcrest командой pip install PyHamcrest==2.0.4;
-- Устанавливаем pip install pytest-cov;
-- Устанавливаем pip install requests;
+- Устанавливаем Appium по команде npm i -g appium;
+- Устанавливаем драйверы appium для раоты с тестами по команде appium driver install uiautomator2, 
+  затем проверьте установку по команде appium -v;
+- Установите Appium Inspector по команде npm install -g appium-inspector;
+- Установить Appium-Python-Client по команде pip install Appium-Python-Client;
+- Установить библиотеку для запуска тестов по команде pip install pytest;
+- Установить библиотеку selenium по команде pip install selenium;
 - Установливаем зависимости проекта командой pip install -r requirements.txt;
-
-
 - Запустите Appium сервер в терминале командой "appium";
 - Создаем эмулятор Pixel 6a API 29 и запускаем его (проверить установку можно нажав дважды Ctrl, затем
-  ввести название приложения "app" и запустить.;
-- В терминале выполнить команду для запуска всех авто-тестов: ./gradlew connectedDebugAndroidTest;
-
+  ввести название приложения "app" и запустить;
+- Запустите тесты командой pytest;
 
 __Формирование отчета Allure с эмулятора__
 

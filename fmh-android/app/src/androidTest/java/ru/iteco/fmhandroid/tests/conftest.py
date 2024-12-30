@@ -1,21 +1,25 @@
 import pathlib
 
 import pytest
-import io.github.bonigarcia.wdm.WebDriverManager
-import org.openqa.selenium.WebDriver
-import org.openqa.selenium.chrome.ChromeDriver
-import org.openqa.selenium.chrome.ChromeOptions
+from appium import webdriver as appium_webdriver
+from selenium.webdriver.chrome.service import Service as ChromeService
+from selenium.webdriver.chrome.options import Options as ChromeOptions
 from appium import webdriver
 from appium.options.android import UiAutomator2Options
 from appium.webdriver.appium_service import AppiumService
 
-pytest_plugins = ["pages_fixtures_test"]
+from pages.authorization import AuthPage
+from pages.main import MainPage
+from pages.news import NewsListPage
 
+# pytest_plugins = ["pages_fixtures_test"]
+
+pytestmark = pytest.mark.usefixtures("setup")
 
 @pytest.fixture(scope="session")
 def appium_service():
     service = AppiumService()
-    service.start()
+    service.start(args=['--base-path', '/wd/hub'])
     # service.start(args=["--config-file", str(pathlib.Path(pathlib.Path.cwd(), ".appiumrc.json"))])
     yield
     service.stop()
@@ -37,9 +41,9 @@ def appium_driver():
     return app_options
 
 
-@pytest.fixture(scope="session", params=appium_driver(), name="driver")
+@pytest.fixture(scope="session", params=[appium_driver()], name="driver")
 def appium_session(request, appium_service):
-    driver = webdriver.Remote("http://127.0.0.1:4723/", options=request.params)
+    driver = webdriver.Remote("http://127.0.0.1:4723/", options=request.param)
     yield driver
     driver.remove_app(app_id="ru.iteco.fmhandroid")
     driver.quit()
@@ -51,3 +55,4 @@ def setup(driver):
     yield
     # driver.terminate_app(app_id="ru.iteco.fmhandroid")
     driver.execute_script("mobile: clearApp", {"appId": "ru.iteco.fmhandroid"})
+

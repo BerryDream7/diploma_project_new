@@ -27,7 +27,7 @@ class Header(BasePage):
         assert main_page.claims_section_title.is_displayed()
         return main_page
 
-        def click_news_line(self):
+    def click_news_line(self):
         self.find_element(Header._news_line).click()
 
         news_lst_page = NewsListPage(self.driver)
